@@ -1,5 +1,8 @@
 #source 'https://gems.ruby-china.org'  #在windows下默认ssl会出错
-source 'http://gems.ruby-china.org'  
+source 'https://rubygems.org'
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
+
+ruby '2.3.5'
 
 gem "schema_validations", :git => 'https://github.com/yuanxinyu/schema_validations'
 gem "activerecord-import"
@@ -21,11 +24,11 @@ gem 'safe_attributes'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 #gem 'rails', '~> 4.2.6'
-gem 'rails', '= 5.0.0'
+gem 'rails' #, '= 5.0.0'
 
-gem 'thor', '0.19.1'
+gem 'thor' #, '0.19.1'
 
-gem 'mysql2'
+gem 'pg', '~> 0.21'
 gem 'oauth2'
 gem 'jwt'
 
@@ -69,3 +72,10 @@ group :development do
   gem 'spring'
 end
 
+gem 'ruby-debug-ide'
+# debase is a fast implementation of the standard Ruby debugger debug.rb for Ruby 2.0 (https://github.com/denofevil/debase)
+gem 'debase'
+# ctags generator for ruby code (http://github.com/tmm1/ripper-tags)
+gem 'pry'
+
+gem 'rails-erd'

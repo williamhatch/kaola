@@ -5,10 +5,19 @@ require 'etc'
 
 def gen_scaffold(t)
   clazz_name = t.camelize.singularize
-  cols = ActiveRecord::Base.connection.columns(t).delete_if{|x| x.name=="created_at" || x.name=="updated_at"}
+  p t
+  cols = ActiveRecord::Base.connection.columns(t).delete_if{|x| 
+    p '...'
+    p x 
+    x.name=="created_at" || x.name=="updated_at"}
+  p ActiveRecord::Base.connection.columns(t)
+  p cols
   fields = cols.map{|x| x.name+":"+x.type.to_s}.join(" ")
+  p fields
   puts "rails g scaffold #{clazz_name} #{fields} -f" if $verbose
+  exit
   system("rails g scaffold #{clazz_name} #{fields} -f > /dev/null")
+  
 end
 
 def gen_route(t)
@@ -107,8 +116,8 @@ def gen_db_tables(hash, re_try=true, parallel=true)
   if re_try # 表示首次调用，非递归
     hash.each do |db, tables|
       establish_conn(db)
-      views = ActiveRecord::Base.connection.retrieve_views
-      tables.each{|t| try_fix_primary_key(t, views) }
+#      views = ActiveRecord::Base.connection.retrieve_views
+#      tables.each{|t| try_fix_primary_key(t, views) }
     end
   end
 end

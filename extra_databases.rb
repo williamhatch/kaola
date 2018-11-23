@@ -10,7 +10,7 @@ $extra_databases = get_extra_dbs
 
 def is_ignore_table?(t)
   #表的名字类似goodslist_20151127, 属于备份表
-  t.match /_\d/
+  t.match /_\d/ or t.match /ar_internal/ or t.match /active_storage/ or t.match /schema_migrations/
 end
 
 def all_database_tables
@@ -22,6 +22,7 @@ def all_database_tables
     tables[extra] = ActiveRecord::Base.connection.data_sources.delete_if{|t| is_ignore_table?(t)}
   end
   ActiveRecord::Base.establish_connection("#{Rails.env}".to_sym)
+  #p tables 
   tables
 end
 
@@ -40,6 +41,7 @@ def establish_conn(db)
 end
 
 $tables = all_tables
+p $tables
 
 class Hash
   def hmap(&block)

@@ -5,6 +5,8 @@ $belongs={}
 $belongs2={}
 $many={}
 
+$verbose = true 
+
 $tables.each do |t|
   if t.singularize.pluralize != t
     puts "警告： 表名#{t}的复数规则有问题"
@@ -16,6 +18,7 @@ def table_exsits?(str)
 end
 
 def test_relation(table_name,col_name,col_prefix)
+  p table_name,col_name,col_prefix
   single = table_name.singularize
   if table_exsits?(col_prefix)
     if col_prefix!=col_prefix.pluralize.singularize
@@ -60,8 +63,10 @@ def find_relation(t)
   clazz_name = t.camelize.singularize
   clazz = Object.const_get(clazz_name)
   cols = clazz.columns.find_all{|x| x.name[-3..-1]=="_id"}
+  p cols, clazz
   puts "try finding relationship: #{t}"  if $verbose
   cols.each do |col|
+    p col
     col_prefix = col.name[0..-4]
     while col_prefix.size>0
       break if test_relation(t,col.name,col_prefix)
@@ -72,8 +77,10 @@ def find_relation(t)
   end
 end
 
+
 ActiveRecord::Base.establish_connection("#{Rails.env}".to_sym)
 $tables.each do |t|
+  p t
   begin
     find_relation(t)
   rescue Exception => e

@@ -1,16 +1,16 @@
-require_relative 'boot'
+require_relative "boot"
 
-require 'rails/all'
-require 'rack/cors'
+require "rails/all"
+require "rack/cors"
 
-require_relative '../custom_fk'
+require_relative "../custom_fk"
 
-$many = YAML.load(File.read('./public/many.yaml'))
-$belongs = YAML.load(File.read('./public/belongs.yaml'))
-$belongs_class = YAML.load(File.read('./public/belongs_class.yaml'))
+$many = YAML.load(File.read("./public/many.yaml"))
+$belongs = YAML.load(File.read("./public/belongs.yaml"))
+$belongs_class = YAML.load(File.read("./public/belongs_class.yaml"))
 
-$belongs.each{|k,v| raise "$belongs duplicate: #{k} -> #{v}" if v.uniq.size != v.size} if $belongs
-$many.each{|k,v| raise "$many duplicate: #{k} -> #{v}" if v.uniq.size != v.size} if $many
+$belongs.each { |k, v| raise "$belongs duplicate: #{k} -> #{v}" if v.uniq.size != v.size } if $belongs
+$many.each { |k, v| raise "$many duplicate: #{k} -> #{v}" if v.uniq.size != v.size } if $many
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -31,20 +31,20 @@ module ScmApi
     config.i18n.default_locale = "zh-CN"
 
     config.generators do |g|
-      g.orm             :active_record, migration: false
+      g.orm :active_record, migration: true
       g.template_engine :erb
-      g.helper          false
-      g.test_framework  false
-      g.stylesheets     false
-      g.javascripts     false      
-      g.jbuilder        false
+      g.helper false
+      g.test_framework false
+      g.stylesheets false
+      g.javascripts false
+      g.jbuilder false
     end
     config.middleware.use Rack::Attack
     config.middleware.use Rack::Deflater
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-        origins '*'
-        resource '*', :headers => :any, :methods => [:get, :post, :delete, :put, :patch, :options, :head]
+        origins "*"
+        resource "*", :headers => :any, :methods => [:get, :post, :delete, :put, :patch, :options, :head]
       end
     end
   end

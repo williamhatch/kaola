@@ -9,9 +9,15 @@ def read_custome_fk
 end
 
 def all_fks
-  arr = ActiveRecord::Base.connection.find_fks
-  read_custome_fk.each{|x| arr << x}
-  arr
+  arr = []
+  begin
+    arr = ActiveRecord::Base.connection.find_fks
+    read_custome_fk.each{|x| arr << x}
+    arr
+  rescue
+    
+  end
+  arr 
 end
 
 def merge_custome_relation
