@@ -203,3 +203,12 @@ Kaola采用 MIT License， https://opensource.org/licenses/MIT
 
 * [kaola 2016高可用架构社区技术分享](https://mp.weixin.qq.com/s?__biz=MzAwMDU1MTE1OQ==&mid=2653548079&idx=1&sn=2377b625db58b2ea93c3ef2d87e4c395&chksm=813a7fb7b64df6a1cd6d1da7ebcc18f958939b7d1226555552dcc098fa64dca9441bc054e567&mpshare=1&scene=1&srcid=0614sXGSoNt6Ui7prVEKq9Ds&key=c32c17d7706c6e263803a518919c45991df530ede512160f78cb7ecd9fcadafb6fed879cdbef2291a467656ef7fe682f7d005c2c6ef1da2a86f4b47ab54c99d576f588f735bbbd40c48e8038f2b3a6a9&ascene=0&uin=MTc3MzI3NTcyMA%3D%3D&devicetype=iMac+MacBook8%2C1+OSX+OSX+10.12.5+build(16F73)&version=12020810&nettype=WIFI&fontScale=100&pass_ticket=kGb2Xo4rtE5Ub9eaFIV%2BhqY9nrNwXuFOvY%2FafkI9B8p9LvU5vtqtOalHZ8EaB4je)；
 * [kaola 2016技术分享](doc/share技术分享.md)；
+
+
+- support postgresql(be note version!)
+- change database.yml (db is ready)
+- run parse.rb (another project to generate sh -- generate model)
+- db-drop create migrate
+- rails r gen_relations.rb verbose
+- notes models are changed and public folders' belongs and many.yml!
+
