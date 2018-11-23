@@ -16,3 +16,5 @@ bin/*
 .env*
 
 vendor/cache
+
+database.yml
