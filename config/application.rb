@@ -31,7 +31,7 @@ module ScmApi
     config.i18n.default_locale = "zh-CN"
 
     config.generators do |g|
-      g.orm :active_record, migration: true
+      g.orm :active_record, migration: false
       g.template_engine :erb
       g.helper false
       g.test_framework false

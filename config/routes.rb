@@ -9,8 +9,10 @@ Rails.application.routes.draw do
   resources :cities
   resources :claimrequests
   resources :contracts
+  resources :cools
   resources :countries
   resources :coupons
+  resources :dangs
   resources :offers
   resources :payments
   resources :photos

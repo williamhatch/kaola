@@ -1,54 +1,54 @@
-require_relative 'extra_databases'
-require_relative 'insert_into_file'
-require 'pmap'
-require 'etc'
+require_relative "extra_databases"
+require_relative "insert_into_file"
+require "pmap"
+require "etc"
 
 def gen_scaffold(t)
   clazz_name = t.camelize.singularize
-  p t
-  cols = ActiveRecord::Base.connection.columns(t).delete_if{|x| 
-    p '...'
-    p x 
-    x.name=="created_at" || x.name=="updated_at"}
-  p ActiveRecord::Base.connection.columns(t)
-  p cols
-  fields = cols.map{|x| x.name+":"+x.type.to_s}.join(" ")
-  p fields
+  #p t
+  cols = ActiveRecord::Base.connection.columns(t).delete_if { |x|
+    #p "..."
+    #p x
+    x.name == "created_at" || x.name == "updated_at"
+  }
+  #p ActiveRecord::Base.connection.columns(t)
+  #p cols
+  fields = cols.map { |x| x.name + ":" + x.type.to_s }.join(" ")
+  #p fields
   puts "rails g scaffold #{clazz_name} #{fields} -f" if $verbose
-  exit
+
   system("rails g scaffold #{clazz_name} #{fields} -f > /dev/null")
-  
 end
 
 def gen_route(t)
-  route =  <<-FOO
+  route = <<-FOO
 match '#{t}(/:action(/:id(.:format)))', via: [:options], to:  lambda {|env| [200, {'Content-Type' => 'text/plain'}, ["OK\n"]]}
 match '#{t}/batch_update(.:format)', action: :batch_update, controller: :#{t}, via: [:post]
 FOO
-  open('config/route_codegen.rb', 'a') do |f|
+  open("config/route_codegen.rb", "a") do |f|
     f.puts route
   end
 end
 
-def fix_primary_key(t, id='id')
+def fix_primary_key(t, id = "id")
   single = t.singularize
   filename = "app/models/#{single}.rb"
-  insert_into_file(filename, "\n  self.primary_key = '"+id+"'", "\nend", false)
+  insert_into_file(filename, "\n  self.primary_key = '" + id + "'", "\nend", false)
 end
 
 def try_fix_primary_key(t, views)
-  clazz = Object.const_get(t.singularize.camelize) 
+  clazz = Object.const_get(t.singularize.camelize)
   if clazz.primary_key
-    if views.find{|x| x==t}
+    if views.find { |x| x == t }
       fix_primary_key(t, clazz.primary_key)  #activerecord库对视图的主键处理有bug，所以这里强制设置视图的主键
     end
     return
   end
-  if clazz.attribute_names.find{|x| x=='id'}
+  if clazz.attribute_names.find { |x| x == "id" }
     fix_primary_key(t)
     return
   end
-  id = clazz.attribute_names.find{|x| x.ends_with? '_id'}
+  id = clazz.attribute_names.find { |x| x.ends_with? "_id" }
   if id
     puts "警告：表#{t}的主键没有，启发式规则设置为#{id}"
     fix_primary_key(t, id)
@@ -59,7 +59,7 @@ end
 
 def fix_table_name(t)
   single = t.singularize
-  if single == t || single+"s" != t #表的名字是单数，或者是类似y结尾的不规则英文复数规则
+  if single == t || single + "s" != t #表的名字是单数，或者是类似y结尾的不规则英文复数规则
     filename = "app/models/#{single}.rb"
     insert_into_file(filename, "\n  self.table_name = '#{t}'", "\nend", false)
   end
@@ -68,28 +68,28 @@ end
 def fix_connection(t, extra_db)
   single = t.singularize
   filename = "app/models/#{single}.rb"
-  str = extra_db+'_#{Rails.env}'
+  str = extra_db + "_#{Rails.env}"
   insert_into_file(filename, "\n  establish_connection \"#{str}\".to_sym", "\nend", false)
 end
 
 def proc_num
   ret = Etc.nprocessors
-  ret = 4 if ret>4
+  ret = 4 if ret > 4
   ret
 end
 
-def gen_db_tables(hash, re_try=true, parallel=true)
+def gen_db_tables(hash, re_try = true, parallel = true)
   errors = {}
   hash.each do |db, tables|
     establish_conn(db)
     errors[db] = []
     proc = Proc.new do |t|
-      print '.' unless $verbose
+      print "." unless $verbose
       succ = true
       begin
         flag = gen_scaffold(t)
         unless flag
-          errors[db] << t 
+          errors[db] << t
           succ = false
         end
       rescue Exception => e
@@ -109,15 +109,18 @@ def gen_db_tables(hash, re_try=true, parallel=true)
       tables.each &proc
     end
   end
-  if re_try && errors.size>0
-    puts "\nretry #{errors}" 
+  
+  re_try = false 
+
+  if re_try && errors.size > 0
+    puts "\nretry #{errors}"
     gen_db_tables(errors, false, false)
   end
   if re_try # 表示首次调用，非递归
     hash.each do |db, tables|
       establish_conn(db)
-#      views = ActiveRecord::Base.connection.retrieve_views
-#      tables.each{|t| try_fix_primary_key(t, views) }
+      #      views = ActiveRecord::Base.connection.retrieve_views
+      #      tables.each{|t| try_fix_primary_key(t, views) }
     end
   end
 end

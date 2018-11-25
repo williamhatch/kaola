@@ -212,3 +212,32 @@ Kaola采用 MIT License， https://opensource.org/licenses/MIT
 - rails r gen_relations.rb verbose
 - notes models are changed and public folders' belongs and many.yml!
 
+### 
+sh -x a.sh (application.rb migration:true)
+rails db:drop db:create db:migrate
+(or create from other apps above)
+
+###
+sh -x autogen.sh verbose ; rails erd;
+
+### test
+rails s
+```
+check public
+localhost:3000/index2.html other 2 yaml files
+
+
+http post :3000/properties.json <<< '{"property": {"description": "nice"}}'
+http post :3000/properties.json <<< '{"properties": [{"description": "nice1"},{"post_code":1000}]}'
+
+http delete :3000/properties/4,5.json #once failed one id, wont delete all
+http  :3000/properties.json
+http post :3000/bulk.json <<< '{"insert":{"properties":[{"description":"!!!"}]},"update":{"properties":[{"id":3,"post_code":222}]}}'
+http :3000/properties.json\?page=2\&per=2
+http  :3000/properties.json\?order=created_at+asc
+http  :3000/properties.json\?s\[like\[description\]\]=nice
+http  :3000/properties.json\?s\[full\[description\]\]=nice1 #doesnt work, might change the code to match postsql from mysql
+curl http://localhost:3000/sql/heartbeat.json
+curl http://localhost:3000/properties.xlsx -o a.xslx
+
+```

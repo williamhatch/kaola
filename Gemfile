@@ -79,3 +79,5 @@ gem 'debase'
 gem 'pry'
 
 gem 'rails-erd'
+
+gem 'annotate'
