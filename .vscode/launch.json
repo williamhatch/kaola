@@ -1,0 +1,116 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "Debug Local File",
+            "type": "Ruby",
+            "request": "launch",
+            "program": "${file}"
+        },
+        {
+            "name": "Listen for rdebug-ide",
+            "type": "Ruby",
+            "request": "attach",
+            "cwd": "${workspaceRoot}",
+            "remoteHost": "127.0.0.1",
+            "remotePort": "1234",
+            "remoteWorkspaceRoot": "${workspaceRoot}"
+        },
+        {
+            "name": "Rails server",
+            "type": "Ruby",
+            "request": "launch",
+            "cwd": "${workspaceRoot}",
+            "program": "${workspaceRoot}/bin/rails",
+            "pathToBundler": "/Users/william/.rbenv/shims/bundle",
+            "pathToRDebugIDE": "/Users/william/.rbenv/shims/rdebug-ide",
+            "useBundler": true,
+            "showDebuggerOutput": true,
+            "args": [
+                "server",
+                "-p",
+                "3001"
+            ]
+        },
+        {
+            "name": "RSpec - all",
+            "type": "Ruby",
+            "request": "launch",
+            "cwd": "${workspaceRoot}",
+            "program": "${workspaceRoot}/bin/rspec",
+            "args": [
+                "-I",
+                "${workspaceRoot}"
+            ]
+        },
+        {
+            "name": "RSpec - active spec file only",
+            "type": "Ruby",
+            "request": "launch",
+            "cwd": "${workspaceRoot}",
+            "program": "${workspaceRoot}/bin/rails",
+            "pathToBundler": "/Users/william/.rbenv/shims/bundle",
+            "pathToRDebugIDE": "/Users/william/.rbenv/shims/rdebug-ide",
+            "useBundler": true,
+            "showDebuggerOutput": true,
+            "args": [
+                "server",
+                "-b",
+                "0.0.0.0"
+            ]
+        },
+        {
+            "name": "Cucumber",
+            "type": "Ruby",
+            "request": "launch",
+            "cwd": "${workspaceRoot}",
+            "program": "${workspaceRoot}/bin/cucumber"
+        },
+        {
+            "name": "Rails runner",
+            "type": "Ruby",
+            "request": "launch",
+            "cwd": "${workspaceRoot}",
+            "program": "${workspaceRoot}/bin/rails",
+            "pathToBundler": "/Users/william/.rbenv/shims/bundle",
+            "pathToRDebugIDE": "/Users/william/.rbenv/shims/rdebug-ide",
+            "useBundler": true,
+            "showDebuggerOutput": true,
+            "args": [
+                "runner",
+                "${file}"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "npm run dev",
+            "runtimeExecutable": "npm",
+            "windows": {
+                "runtimeExecutable": "npm.cmd"
+            },
+            "runtimeArgs": [
+                "run",
+                "dev-debug"
+            ],
+            "port": 9229
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Program",
+            "program": "${workspaceRoot}/start"
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Attach to Port",
+            "address": "localhost",
+            "port": 5858
+        }
+    ]
+}
