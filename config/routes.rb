@@ -7,24 +7,7 @@ end
 Rails.application.routes.draw do
   resources :ar_internal_metadatas
   resources :cities
-  resources :claimrequests
-  resources :contracts
-  resources :cools
-  resources :countries
-  resources :coupons
-  resources :dangs
-  resources :offers
-  resources :payments
-  resources :photos
-  resources :properties
-  resources :rooms
-  resources :schema_migrations
-  resources :staffs
-  resources :suburbs
-  resources :tags
-  resources :users
-  resources :viewing_logs
-  resources :viewings
+  
   draw :route_common
   draw :route_codegen
 end
